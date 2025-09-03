@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gudang Pusaka Jawi</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --panel: #1a1a1a;
+      --border: #2b2b2b;
+      --text: #e0e0e0;
+      --muted: #a9a9a9;
+      --accent: #ffd700;
+      --wa: #25D366;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Poppins", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(120deg, #111, #1a1a1a 60%, #111);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    .head {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: var(--accent);
+      letter-spacing: .5px;
+    }
+    .tag { margin: .15rem 0 0; color: var(--muted); font-size: .95rem; }
+
+    .icons-inline svg { opacity: .9 }
+
+    .search {
+      margin-top: .5rem;
+      display: flex;
+      gap: .6rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search input[type="text"] {
+      flex: 1 1 360px;
+      width: 100%;
+      padding: .85rem 1rem;
+      border-radius: 10px;
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      outline: none;
+      font-size: 1rem;
+    }
+    .search .clear {
+      padding: .7rem 1rem;
+      border-radius: 10px;
+      background: #2a2a2a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .chips {
+      display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .5rem;
+    }
+    .chip {
+      font-size: .85rem; padding: .45rem .7rem; border: 1px solid var(--border);
+      border-radius: 999px; background: #141414; color: var(--muted); cursor: pointer;
+    }
+    .chip:hover { color: var(--text); border-color: #3a3a3a; }
+
+    main { padding: 1rem 0 2rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .product {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .product:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,.25); }
+
+   .thumb {
+    width: 100%;
+    object-fit: contain; /* gambar tetap utuh, biasanya ada padding kosong */
+    background: #000; /* kasih background biar rapi */
+     display: block;
+    }
+
+
+    .card-body { padding: 1rem; }
+    .title { margin: .2rem 0 .4rem; font-size: 1.05rem; color: #f3f3f3; }
+    .desc { margin: 0; font-size: .92rem; color: var(--muted); }
+    .meta { display:flex; justify-content: space-between; align-items:center; margin-top:.8rem; }
+    .price { color: var(--accent); font-weight: 600; }
+    .btn {
+      text-decoration: none; display: inline-block; background: var(--wa); color: #fff;
+      padding: .6rem .9rem; border-radius: 10px; border: 0; font-weight: 600;
+    }
+    .btn:hover { filter: brightness(.95); }
+
+    .empty { display:none; text-align:center; color: var(--muted); padding: 2rem 0; }
+
+    /* utility */
+    .hidden { display: none !important; }
+
+    /* footer */
+    footer { border-top: 1px solid var(--border); background:#111; }
+    footer .foot { display:flex; justify-content:center; gap:12px; padding: 1.1rem 0 .5rem; }
+    footer p { text-align:center; color: var(--muted); margin: .2rem 0 1rem; font-size:.92rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="head">
+        <div class="brand">
+          <div class="icons-inline" aria-hidden="true">
+            <!-- Gunungan Wayang -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 512 512" fill="gold">
+              <path d="M256 32 96 480h320L256 32z"/>
+            </svg>
+            <!-- Motif Batik (simplified) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 512 512" fill="#ff6b2b">
+              <circle cx="256" cy="256" r="56"/>
+              <circle cx="120" cy="120" r="36"/>
+              <circle cx="392" cy="120" r="36"/>
+              <circle cx="120" cy="392" r="36"/>
+              <circle cx="392" cy="392" r="36"/>
+            </svg>
+          </div>
+          <div>
+            <h1>Gudang Pusaka Jawi</h1>
+            <div class="tag">Koleksi keris Nusantara bernuansa elegan, dan penuh makna.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="search" role="search">
+        <input id="searchInput" type="text" placeholder="Cari berdasarkan dapur keris… (mis. lurus, wos wutah, tilam upih, sengkelat)" aria-label="Cari dapur keris" />
+        <button class="clear" id="clearBtn" type="button">Bersihkan</button>
+        <div class="chips" aria-label="Contoh cepat">
+          <span class="chip" data-q="nogo siluman luk 11">Nogo Siluman luk 11</span>
+          <span class="chip" data-q="sangkelat luk 13">Sengkelat luk 13</span>
+          <span class="chip" data-q="tilam upih">Tilam Upih</span>
+          <span class="chip" data-q="sabuk inten">Sabuk Inten</span>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="empty" class="empty">Tidak ditemukan produk untuk kata kunci tersebut.</div>
+
+    <section id="productList" class="grid" aria-live="polite">
+      <!-- Produk 1 -->
+      <!-- <article class="product" data-dapur="lurus" data-keywords="pamor lurus klasik straight" data-price="3500000">
+        <img class="thumb" src="https://i.imgur.com/mJ4vjfL.jpeg" alt="Keris Hitam Pamor Lurus" />
+        <div class="card-body">
+          <h2 class="title">Keris Hitam Pamor Lurus</h2>
+          <p class="desc">Keris klasik dengan pamor lurus, melambangkan keteguhan hati.</p>
+          <div class="meta">
+            <div class="price">Rp 3.500.000</div>
+            <a class="btn" href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+memesan+Keris+Hitam+Pamor+Lurus" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </div>
+      </article> -->
+
+      <article class="product" 
+         data-dapur="nogo siluman luk 11" 
+         data-keywords="nogo siluman luk 11 kartasura pedaringan kebak kewibawaan rejeki gayaman surakarta timoho" 
+         data-price="6000000">
+  <img class="thumb" src="https://i.imgur.com/mJ4vjfL.jpeg" alt="Keris Nogo Siluman Luk 11" />
+  <div class="card-body">
+    <h2 class="title">Keris Nogo Siluman Luk 11</h2>
+    <p class="desc">
+      Tangguh: Kartasura <br>
+      Pamor: Pedaringan Kebak <br>
+      Angsar: Kewibawaan &amp; Kerejekian <br>
+      Warangka: Gayaman Surakarta kayu Timoho <br>
+      Panjang Bilah: 35 cm | Panjang Pesi: 7 cm <br><br>
+      Keris Nogo Siluman merupakan keris untuk menunjang kewibawaan dan kadigdayan tinggi 
+      bagi pemiliknya dalam mencapai sebuah tujuan. Luk 11 melambangkan kemuliaan dan 
+      pamomong dalam hubungan antar manusia maupun relasi yang lebih luas. 
+      Pamor Pedaringan Kebak dipercaya membawa kelimpahan rezeki. Cocok bagi Anda 
+      yang ingin naik jabatan dan terlindungi dari bahaya yang mengancam.
+    </p>
+    <div class="meta">
+      <div class="price">Rp 6.000.000</div>
+      <a class="btn" href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+memesan+Keris+Nogo+Siluman+Luk+11" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</article>
+
+
+      <!-- Produk 2 -->
+    <article class="product" 
+         data-dapur="sangkelat luk 13" 
+         data-keywords="sangkelat luk 13 pedaringan kebak mataram islam sultan agung kewibawaan kadigdayan branggah jogja sono tayuman mendak padma" 
+         data-price="7000000">
+  <img class="thumb" src="https://i.imgur.com/1iuZTbg.jpeg" alt="Keris Sangkelat Luk 13" />
+  <div class="card-body">
+    <h2 class="title">Keris Dapur Sangkelat Luk 13</h2>
+    <p class="desc">
+      Pamor: Pedaringan Kebak <br>
+      Estimasi: Mataram Islam (Sultan Agung) <br>
+      Panjang Bilah: 35 cm | Panjang Pesi: 7 cm <br>
+      Warangka: Branggah Gaya Jogja (Kayu Sono) <br>
+      Deder: Jogja kayu Tayuman <br>
+      Mendak: Motif Padma <br><br>
+      Sengkelat adalah dapur dengan luk 13 yang sangat populer di kalangan pecinta tosan aji. 
+      Dipercaya memiliki tuah kewibawaan dan kadigdayan tinggi. Nama Sengkelat berarti 
+      <em>"Sengkolo Ingkang Mencelat"</em>, doa agar pemiliknya terhindar dari marabahaya 
+      yang terlihat maupun tidak terlihat. Pamor Pedaringan Kebak menandakan doa sang Empu 
+      agar pemilik selalu dianugerahi kelimpahan rezeki.
+    </p>
+    <div class="meta">
+      <div class="price">Rp 7.000.000</div>
+      <a class="btn" href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+memesan+Keris+Dapur+Sangkelat+Luk+13" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</article>
+
+
+      <!-- Produk 3 -->
+     <article class="product" 
+         data-dapur="tilam upih" 
+         data-keywords="tilam upih udan emas tiban tuban bekel jati ladrang kesatriyan surakarta trembalu timoho kemakmuran rezeki pusaka" 
+         data-price="5000000">
+  <img class="thumb" src="https://i.imgur.com/p5qlNt8.jpeg" alt="Keris Dapur Tilam Upih" />
+  <div class="card-body">
+    <h2 class="title">Keris Dapur Tilam Upih</h2>
+    <p class="desc">
+      Pamor: Udan Emas Tiban <br>
+      Tangguh: Tuban Bekel Jati <br>
+      Panjang Bilah: 37 cm | Panjang Pesi: 8 cm <br>
+      Warangka: Ladrang Kesatriyan Surakarta (Kayu Trembalu) <br>
+      Deder: Kayu Timoho <br><br>
+      Tilam Upih bermakna <em>Tikar dari Pelepah Pinang</em>, simbol perjalanan manusia 
+      dalam mencapai kemakmuran hidup. Dapur ini melambangkan perjuangan serta ikhtiar 
+      dalam proses mencari rezeki. Pamor Udan Emas merupakan doa sang Empu agar pemilik 
+      diberi rezeki berlebih. Tak heran bila Tilam Upih juga dikenal sebagai 
+      <strong>"Ibunya Pusaka"</strong> karena maknanya yang mendalam.
+    </p>
+    <div class="meta">
+      <div class="price">Rp 5.000.000</div>
+      <a class="btn" href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+memesan+Keris+Dapur+Tilam+Upih" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</article>
+
+
+      <!-- Produk 4 (contoh tambahan) -->
+ <article class="product" 
+         data-dapur="sabuk inten" 
+         data-keywords="sabuk inten luk 11 kamardikan empu godho wengkon isen perlindungan kemuliaan" 
+         data-price="8000000">
+  <img class="thumb" src="https://i.imgur.com/vXlEaMq.jpeg" alt="Keris Dapur Sabuk Inten Luk 11" />
+  <div class="card-body">
+    <h2 class="title">Keris Dapur Sabuk Inten (Luk 11)</h2>
+    <p class="desc">
+      Tangguh: Kamardikan | Karya: Empu Godho <br>
+      Pamor: Wengkon Isen <br>
+      Warangka: Ladrang Surakarta (Kayu Trembalu) <br>
+      Handle: Kayu Timoho | Mendak: Selut <br>
+      Pendok: Bunton Motif Daun Tempel <br>
+      Panjang Bilah: 35 cm | Panjang Pesi: 7 cm <br><br>
+      Sabuk Inten bermakna ikhtiar dan usaha maksimal untuk meraih kemuliaan hidup. 
+      Pamor Wengkon Isen dipercaya memberi perlindungan dari Tuhan bagi pemiliknya.
+    </p>
+    <div class="meta">
+      <div class="price">Rp 8.000.000</div>
+      <a class="btn" href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+memesan+Keris+Dapur+Sabuk+Inten+Luk+11" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</article>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot" aria-hidden="true">
+        <!-- Gamelan -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512 512" fill="#ffd700">
+          <rect x="80" y="200" width="352" height="80" rx="10"/>
+          <circle cx="160" cy="240" r="20" fill="black"/>
+          <circle cx="352" cy="240" r="20" fill="black"/>
+        </svg>
+        <!-- Wayang -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 512 512" fill="#c0c0c0">
+          <path d="M256 32 96 480h320L256 32z"/>
+        </svg>
+      </div>
+      <p>© 2025 Gudang Pusaka Jawi · Nuansa Jawi</p>
+    </div>
+  </footer>
+
+  <script>
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const chips = document.querySelectorAll('.chip');
+    const items = Array.from(document.querySelectorAll('.product'));
+    const empty = document.getElementById('empty');
+
+    function normalize(str){ return (str || '').toString().toLowerCase().normalize('NFKD').trim(); }
+
+    function matches(item, q){
+      if(!q) return true; // kosong = tampil semua
+      const dapur = normalize(item.dataset.dapur);
+      const keywords = normalize(item.dataset.keywords);
+      const text = normalize(item.querySelector('.title')?.textContent + ' ' + item.querySelector('.desc')?.textContent);
+      return [dapur, keywords, text].some(v => v.includes(q));
+    }
+
+    function applyFilter(q){
+      const query = normalize(q);
+      let visibleCount = 0;
+      items.forEach(it => {
+        const show = matches(it, query);
+        it.classList.toggle('hidden', !show);
+        if(show) visibleCount++;
+      });
+      empty.style.display = (visibleCount === 0 && query) ? 'block' : 'none';
+    }
+
+    // gunakan event 'input' agar responsif, dan aman di mobile
+    input.addEventListener('input', (e) => applyFilter(e.target.value));
+
+    clearBtn.addEventListener('click', () => { input.value = ''; applyFilter(''); input.focus(); });
+
+    chips.forEach(c => c.addEventListener('click', () => { input.value = c.dataset.q; applyFilter(c.dataset.q); }));
+
+    // Inisialisasi (pastikan semua tampil saat load)
+    applyFilter('');
+  </script>
+</body>
+</html>
